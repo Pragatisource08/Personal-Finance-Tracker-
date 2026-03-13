@@ -39,3 +39,13 @@ def delete_transaction(id):
 def get_transaction():
     transactions=Transaction.query.all() 
     return render_template('transactions.html',transactions=transactions)     
+
+
+@main.route('/expense/<int:month>/<int:year>')
+def get_expense(month, year):
+     transactions = Transaction.query.filter( 
+     db.extract('month', Transaction.date) == month, 
+     db.extract('year', Transaction.date) == year 
+     ).all() 
+     total = sum(t.amount for t in transactions)
+     return render_template("expense.html", month=month, year=year,total=total)    
