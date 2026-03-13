@@ -1,1 +1,29 @@
-# routes will be added here
+from flask import render_template, Blueprint,request,redirect,url_for
+from app import db
+from datetime import datetime
+from app.models import Transaction
+
+main = Blueprint('main', __name__)
+
+@main.route('/')
+def home():
+    return render_template("index.html")
+
+
+@main.route('/add_transaction',methods=['POST'])
+def add_transaction():
+    date=datetime.now()
+    day=datetime.now().strftime("%A")
+    expense_purpose=request.form['expense_purpose']
+    amount=request.form['amount']
+    user_id=1
+    new_transaction = Transaction(
+        amount=amount,
+        expense_purpose=expense_purpose,
+        date=date,
+        day=day,
+        user_id=user_id
+        )    
+    db.session.add(new_transaction)
+    db.session.commit()
+    return redirect(url_for('main.home'))

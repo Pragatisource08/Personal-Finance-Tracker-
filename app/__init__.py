@@ -6,6 +6,7 @@ def build_app():
     app=Flask(__name__)
     app.config.from_object(Config)
     db.init_app(app)
-    from . import routes
     from . import models
+    from . import routes
+    app.register_blueprint(routes.main)
     return app
