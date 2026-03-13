@@ -27,3 +27,15 @@ def add_transaction():
     db.session.add(new_transaction)
     db.session.commit()
     return redirect(url_for('main.home'))
+
+@main.route('/transaction/delete/<id>', methods=['POST'])
+def delete_transaction(id):
+    transaction = Transaction.query.get_or_404(id)
+    db.session.delete(transaction)
+    db.session.commit()
+    return redirect(url_for('main.home'))
+
+@main.route('/transaction')
+def get_transaction():
+    transactions=Transaction.query.all() 
+    return render_template('transactions.html',transactions=transactions)     
