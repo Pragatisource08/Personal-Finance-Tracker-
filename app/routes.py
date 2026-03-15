@@ -68,6 +68,10 @@ def export_csv():
     response.headers['Content-Type']='text/csv'
     return response
 
-@main.route('/summary')
+@main.route('/summary', methods=['GET','POST'])
 def summary():
+    if request.method=='POST':
+        month=request.form['month']
+        year=request.form['year']
+        return redirect(url_for('main.get_expense',month=month,year=year))
     return render_template('summary.html')
