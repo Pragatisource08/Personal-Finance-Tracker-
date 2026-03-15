@@ -17,13 +17,15 @@ def add_transaction():
     day=datetime.now().strftime("%A")
     expense_purpose=request.form['expense_purpose']
     amount=request.form['amount']
+    category=request.form['category']
     user_id=1
     new_transaction = Transaction(
         amount=amount,
         expense_purpose=expense_purpose,
         date=date,
         day=day,
-        user_id=user_id
+        user_id=user_id,
+        category=category
         )    
     db.session.add(new_transaction)
     db.session.commit()
@@ -57,9 +59,9 @@ def export_csv():
     transactions=Transaction.query.all()
     output=io.StringIO()
     writer=csv.writer(output)
-    writer.writerow(['id','amount','expense_purpose','day','date'])
+    writer.writerow(['id','amount','expense_purpose','category','day','date'])
     for t in transactions:
-        writer.writerow([t.id,t.amount,t.expense_purpose,t.date,t.day])
+        writer.writerow([t.id,t.amount,t.expense_purpose,t.category,t.date,t.day])
 
     response=make_response(output.getvalue())
     response.headers['Content-Disposition']='attachment; filename=transactions.csv'
