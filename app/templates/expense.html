@@ -1,5 +1,29 @@
 {% extends 'base.html' %}
 {% block content %}
-<h2>Summary for month {{ year }} / {{ month }}</h2>
+
+<h2>Summary for month {{ month }} / {{ year }}</h2>
 <p>Total Expenses: {{ total }}</p>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<canvas id="categoryChart" width="90" height="45"></canvas>
+
+<script>
+    const data = {{ category_json | safe }};
+    const labels = Object.keys(data);
+    const values = Object.values(data);
+
+    new Chart(document.getElementById('categoryChart'), {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Spending by Category',
+                data: values,
+                backgroundColor: 'rgba(54, 162, 235, 0.5)'
+            }]
+        }
+    });
+</script>
+
 {% endblock %}
