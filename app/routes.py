@@ -8,8 +8,8 @@ main = Blueprint('main', __name__)
 
 @main.route('/')
 def home():
-    return render_template("index.html")
-
+    transactions=Transaction.query.all()
+    return render_template('index.html',transactions=transactions)
 
 @main.route('/add_transaction',methods=['POST'])
 def add_transaction():

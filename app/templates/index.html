@@ -1,11 +1,42 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Personal Finance Tracker</title>
-</head>
-<body>
-    <h1>Personal Finance Tracker</h1>
-</body>
-</html>
+{% extends 'base.html' %}
+{% block content %}
+<form action="/add_transaction" method="POST">
+   
+    <input type="number" name="amount" placeholder="Amount">
+    <input type="text" name="expense_purpose" placeholder="Purpose">
+    <select name="category">
+        <option value="food">Food</option>
+        <option value="travel">Travel</option>
+        <option value="rent">Rent</option>
+        <option value="grocery">Grocery</option>
+        <option value="healthcare">Healthcare</option>
+        <option value="shopping">Shopping</option>
+        <option value="education">Education</option>
+    </select>
+    <button type ="submit">add transaction</button>
+</form>
+
+<table>
+    <tr>
+        <th>Amount</th>
+        <th>Purpose</th>
+        <th>Category</th>
+        <th>Day</th>
+        <th>Date</th>
+        <th>Action</th>
+    </tr>
+    {% for t in transactions %}
+<tr>
+    <td>{{ t.amount }}</td>
+    <td>{{ t.expense_purpose }}</td>
+    <td>{{ t.category }}</td>
+    <td>{{ t.day }}</td>
+    <td>{{ t.date }}</td>
+    <td><form action="/transaction/delete/{{t.id}}" method ="POST">
+    <button type="submit">Delete</button>
+    </form>
+    </td>
+</tr>
+{% endfor %}
+</table>
+{% endblock %}
