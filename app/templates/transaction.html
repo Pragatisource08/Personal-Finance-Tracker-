@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<table>
+    <tr>
+        <th>Amount</th>
+        <th>Purpose</th>
+        <th>Category</th>
+        <th>Day</th>
+        <th>Date</th>
+        <th>Action</th>
+    </tr>
+    {% for t in transactions %}
+<tr>
+    <td>{{ t.amount }}</td>
+    <td>{{ t.expense_purpose }}</td>
+    <td>{{ t.category }}</td>
+    <td>{{ t.day }}</td>
+    <td>{{ t.date }}</td>
+    <td><form action="/transaction/delete/{{t.id}}" method ="POST">
+    <button type="submit">Delete</button>
+    </form>
+    </td>
+</tr>
+{% endfor %}
+</table>
+{% endblock %}

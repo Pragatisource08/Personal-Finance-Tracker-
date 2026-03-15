@@ -41,7 +41,7 @@ def delete_transaction(id):
 @main.route('/transaction')
 def get_transaction():
     transactions=Transaction.query.all() 
-    return render_template('transactions.html',transactions=transactions)     
+    return render_template('transaction.html',transactions=transactions)     
 
 
 @main.route('/expense/<int:month>/<int:year>')
