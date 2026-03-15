@@ -12,5 +12,5 @@ class Transaction(db.Model):
     day=db.Column(db.String(100),nullable=False)
     expense_purpose=db.Column(db.String(100),nullable=True)
     amount=db.Column(db.Float,nullable=False)
-    income=db.Column(db.Float,nullable)
+    income=db.Column(db.Float,nullable=True)
 

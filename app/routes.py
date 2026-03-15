@@ -1,8 +1,9 @@
-from flask import render_template, Blueprint,request,redirect,url_for
+from flask import render_template, Blueprint,request,redirect,url_for,make_response
 from app import db
 from datetime import datetime
 from app.models import Transaction
-
+import csv
+import io
 main = Blueprint('main', __name__)
 
 @main.route('/')
@@ -48,4 +49,20 @@ def get_expense(month, year):
      db.extract('year', Transaction.date) == year 
      ).all() 
      total = sum(t.amount for t in transactions)
-     return render_template("expense.html", month=month, year=year,total=total)    
+     return render_template("expense.html", month=month, year=year,total=total)
+
+
+@main.route('/export')
+def export_csv():
+    transactions=Transaction.query.all()
+    output=io.StringIO()
+    writer=csv.writer(output)
+    writer.writerow(['id','amount','expense_purpose','day','date'])
+    for t in transactions:
+        writer.writerow([t.id,t.amount,t.expense_purpose,t.date,t.day])
+
+    response=make_response(output.getvalue())
+    response.headers['Content-Disposition']='attachment; filename=transactions.csv'
+    response.headers['Content-Type']='text/csv'
+    return response
+
