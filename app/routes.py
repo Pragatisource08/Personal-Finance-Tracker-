@@ -68,3 +68,6 @@ def export_csv():
     response.headers['Content-Type']='text/csv'
     return response
 
+@main.route('/summary')
+def summary():
+    return render_template('summary.html')
