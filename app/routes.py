@@ -1,4 +1,4 @@
-from flask import render_template, Blueprint,request,redirect,url_for,make_response
+from flask import render_template, Blueprint,request,redirect,url_for,make_response,flash
 from app import db
 from datetime import datetime
 from app.models import Transaction
@@ -19,6 +19,9 @@ def add_transaction():
     day=datetime.now().strftime("%A")
     expense_purpose=request.form['expense_purpose']
     amount=request.form['amount']
+    if not amount:
+        flash('Amount is required','error')
+        return redirect(url_for('main.home'))
     category=request.form['category']
     user_id=1
     new_transaction = Transaction(
@@ -31,6 +34,7 @@ def add_transaction():
         )    
     db.session.add(new_transaction)
     db.session.commit()
+    flash('Transaction added Successfully','success')
     return redirect(url_for('main.home'))
 
 @main.route('/transaction/delete/<id>', methods=['POST'])
